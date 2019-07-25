@@ -30,7 +30,7 @@ bot.on('message', msg => {
         for (i = 0; i < tools.swears.length; i++) {
             if (msg.content.includes(tools.swears[i])) {
                 // msg.delete(1000)
-                msg.channel.send({ files: ['christianserver.jpg'] })
+                msg.channel.send({ files: ['images/christianserver.jpg'] })
             }
         }
 
