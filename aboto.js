@@ -19,7 +19,7 @@ bot.on("ready", () => {
 bot.on('message', msg => {
     if (!msg.content.startsWith(prefix)) {
         // found a msg not containing command 
-        if (msg.content.includes('hello')) {
+        if (msg.content.includes('hello') && (!msg.author.bot)) {
             msg.reply('hello')
         }
         if (msg.content.includes('poop')) {
