@@ -8,16 +8,14 @@ const tools = require('./tools.js')
 const token = tools.token
 const prefix = '?'
 
+// weather map containing emoji for known descriptors 
 var weatherMap = {}
-
-// init known descriptors 
 weatherMap['Clear'] = '☀️'
 weatherMap['Rain'] = '🌧'
-weatherMap['Clouds'] = '☁️'
-
-// unsure of key names 
+weatherMap['Clouds'] = '⛅'
 weatherMap['Snow'] = '❄️'
-weatherMap['Wind'] = '🌬'
+weatherMap['Drizzle'] = '💧'
+weatherMap['Thunderstorm'] = '⚡'
 
 
 // console log on successful login
@@ -60,21 +58,17 @@ bot.on('message', msg => {
         .split(/ +/g)
     // pop first element (the command)
     const command = args.shift().toLowerCase()
-    
-    /*
-    console.log(args)
-    console.log(command)
-    */ 
 
+    // openweather api handling
     if (command === 'weather') {
         if (args.length == 0) {
             msg.channel.send("Specify ZIP code -- ie. ?weather 98119")
             return
         }
-
+        
+        // init request string
         var reqString = {
-            host : 'api.openweathermap.org', // here only the domain name
-            // (no http/https !)
+            host : 'api.openweathermap.org',
             port : 443,
             path : '/data/2.5/weather?zip='+ args[0] 
                 + ',us&units=imperial&appid=' + tools.weatherToken,
@@ -111,5 +105,3 @@ bot.on('message', msg => {
 
 
 bot.login(token)
-
-
