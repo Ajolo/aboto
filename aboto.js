@@ -8,6 +8,8 @@ const tools = require('./tools.js')
 const token = tools.token
 const prefix = '?'
 
+// new comment
+
 // weather map containing emoji for known descriptors 
 var weatherMap = {}
 weatherMap['Clear'] = '☀️'
