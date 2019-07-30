@@ -1,6 +1,6 @@
-/*
-    GLOBALS
-*/
+//
+//  GLOBALS
+//
 const Discord = require('discord.js')
 const https = require('https')
 const bot = new Discord.Client()
@@ -23,9 +23,9 @@ bot.on("ready", () => {
     console.log("aboto is now online!")
 })
 
-/*
-    MSG REPLIES
-*/
+//
+//  MSG REPLIES
+//
 bot.on('message', msg => {
     // simple replies 
     if (!msg.content.startsWith(prefix)) {
@@ -38,6 +38,9 @@ bot.on('message', msg => {
         }
         if (new RegExp("\\b"+"area 51"+"\\b").test(msg.content)) {
             msg.react('👽')
+        }
+        if (new RegExp("\\b"+"69"+"\\b").test(msg.content)) {
+            msg.channel.send('nice')
         }
 
         // check for bad words
@@ -58,6 +61,11 @@ bot.on('message', msg => {
         .split(/ +/g)
     // pop first element (the command)
     const command = args.shift().toLowerCase()
+
+    // random num generator 
+    if (command === 'random') {
+        msg.channel.send(parseInt((Math.random() * 100) + 1))
+    }
 
     // openweather api handling
     if (command === 'weather') {
@@ -104,4 +112,7 @@ bot.on('message', msg => {
 })
 
 
+//
+// LOGIN ON START
+//
 bot.login(token)
