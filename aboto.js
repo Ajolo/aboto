@@ -3,6 +3,7 @@
 //
 const Discord = require('discord.js')
 const https = require('https')
+const ytdl = require('ytdl-core')
 const bot = new Discord.Client()
 const tools = require('./tools.js')
 const token = tools.token
@@ -30,7 +31,7 @@ bot.on("disconnect", () => {
 })
 
 //
-//  MSG REPLIES
+//  MSG HANDLING
 //
 bot.on('message', msg => {
     // ignore bot messages
@@ -159,13 +160,45 @@ bot.on('message', msg => {
             return
         }
 
-
+        getSong(msg, args[0])
     }
 
     else {
         msg.channel.send("?command not recognized")
     }
 })
+
+//
+// PLAY REQ HANDLING 
+//
+async function getSong(msg, songName) {
+    const voiceChannel = msg.member.voiceChannel
+
+    // verify user in voice channel
+    if (!voiceChannel) { 
+        msg.channel.send("Join a voice channel to request playback")
+        return
+    }
+
+    const songInfo = await ytdl.getInfo(songName)
+    const song = {
+        title: songInfo.title,
+        url: songInfo.video_url
+    }
+
+    // msg.channel.send(song.title)
+    try {
+        var connection = await voiceChannel.join()
+        connection.playStream(ytdl(song.url))
+    }
+    catch (err) {
+        console.log(err)
+    }
+
+    // dc from voice channel
+    // await voiceChannel.disconnect()
+}
+
 
 
 //
