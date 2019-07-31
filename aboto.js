@@ -6,7 +6,7 @@ const https = require('https')
 const bot = new Discord.Client()
 const tools = require('./tools.js')
 const token = tools.token
-const prefix = '?'
+const prefix = tools.prefix
 
 // weather map containing emoji for known descriptors 
 var weatherMap = {}
@@ -18,19 +18,28 @@ weatherMap['Drizzle'] = '💧'
 weatherMap['Thunderstorm'] = '⚡'
 
 
-// console log on successful login
+// console log basic listeners 
 bot.on("ready", () => {
     console.log("aboto is now online!")
+})
+bot.on("reconnecting", () => {
+    console.log("aboto is reconnecting . . .")
+})
+bot.on("disconnect", () => {
+    console.log("aboto has disconnected")
 })
 
 //
 //  MSG REPLIES
 //
 bot.on('message', msg => {
+    // ignore bot messages
+    if (msg.author.bot) return
+
     // simple replies 
     if (!msg.content.startsWith(prefix)) {
         // found a msg not containing command 
-        if (new RegExp("\\b"+"hello"+"\\b").test(msg.content) && (!msg.author.bot)) {
+        if (new RegExp("\\b"+"hello"+"\\b").test(msg.content)) {
             msg.reply('hello')
         }
         if (new RegExp("\\b"+"poop"+"\\b").test(msg.content)) {
@@ -62,6 +71,40 @@ bot.on('message', msg => {
     // pop first element (the command)
     const command = args.shift().toLowerCase()
 
+    async function checkRole() {
+        if (msg.member.roles.find("name", "creator")) {
+            return true
+        }
+        return false
+    }
+
+    /* temp remove for further testing
+    if (command === 'delete') {
+        if (checkRole() == false) {
+            msg.channel.send("Higher privileges needed for this command")
+            return
+        }
+
+        async function bulkDelete(numDelete) {
+            if (isNaN(numDelete)) {
+                msg.channel.send("Specify number of messages to delete -- ie. ?delete 5")
+                return
+            }
+    
+            msg.delete() // delete msg containing delete command
+            
+            // grab x amount of messages, limit specified by user
+            const fetched = await msg.channel.fetchMessages({limit: numDelete})
+            console.log("~~~ fetched.size is: " + fetched.size)
+    
+            msg.channel.bulkDelete(fetched)
+                .catch(error => console.log(error))
+        }
+        
+        bulkDelete(args[0])
+    }
+    */
+
     // random num generator 
     if (command === 'random') {
         msg.channel.send(parseInt((Math.random() * 100) + 1))
@@ -83,7 +126,7 @@ bot.on('message', msg => {
             method : 'GET' 
         };
         
-        // do the GET request
+        // perform the GET request
         var reqGet = https.request(reqString, function(res) {
             console.log("statusCode: ", res.statusCode)
             var output = ''
@@ -108,6 +151,19 @@ bot.on('message', msg => {
         reqGet.on('error', function(e) {
             console.error(e);
         })
+    }
+
+    if (command === 'play') {
+        if (args.length == 0) {
+            msg.channel.send("Specify a name to search -- ie. ?play despacito")
+            return
+        }
+
+
+    }
+
+    else {
+        msg.channel.send("?command not recognized")
     }
 })
 
