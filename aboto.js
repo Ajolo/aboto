@@ -190,26 +190,24 @@ async function getSong(msg, songName) {
     try {
         var connection = await voiceChannel.join()
         console.log("Playing " + song.title)
-        var dispatcher = connection.playStream(ytdl(song.url))
-            .on('end', () => {
+        const dispatcher = connection.playStream(ytdl(song.url, { filter : 'audioonly' }))
+        
+        dispatcher.on('end', () => {
                 console.log('Stream finished')
-                voiceChannel.leave()
+                // voiceChannel.leave()
 
                 // shift the queue
                 // serverQueue.songs.shift()
-            })
-            .on('error', err => {
+        })
+        dispatcher.on('error', err => {
                 console.log(err)
-            })
+        })
 
         dispatcher.setVolumeLogarithmic(5 / 5);
     }
     catch (err) {
         console.log(err)
     }
-
-    // dc from voice channel
-    // voiceChannel.leave()
 }
 
 
