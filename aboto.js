@@ -112,7 +112,7 @@ bot.on('message', msg => {
     }
 
     // openweather api handling
-    if (command === 'weather') {
+    else if (command === 'weather') {
         if (args.length == 0) {
             msg.channel.send("Specify ZIP code -- ie. ?weather 98119")
             return
@@ -154,7 +154,7 @@ bot.on('message', msg => {
         })
     }
 
-    if (command === 'play') {
+    else if (command === 'play') {
         if (args.length == 0) {
             msg.channel.send("Specify a name to search -- ie. ?play despacito")
             return

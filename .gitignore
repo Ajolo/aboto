@@ -1,2 +1,4 @@
 # internal -- not to be published to github
 tools.js
+npm-debug.log
+node_modules/
