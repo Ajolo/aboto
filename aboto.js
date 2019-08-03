@@ -2,7 +2,6 @@
 //  GLOBALS
 //
 const Discord = require('discord.js')
-const https = require('https')
 const ytdl = require('ytdl-core')
 const fs = require('fs') // fs is Node's native file system module
 const tools = require('./tools.js')
@@ -24,16 +23,6 @@ for (const file of commandFiles) {
 	// with the key as the command name and the value as the exported module
 	bot.commands.set(command.name, command);
 }
-
-
-// weather map containing emoji for known descriptors 
-var weatherMap = {}
-weatherMap['Clear'] = '☀️'
-weatherMap['Rain'] = '🌧'
-weatherMap['Clouds'] = '⛅'
-weatherMap['Snow'] = '❄️'
-weatherMap['Drizzle'] = '💧'
-weatherMap['Thunderstorm'] = '⚡'
 
 
 // console log basic listeners 
@@ -92,6 +81,7 @@ bot.on('message', msg => {
     // check if msg contains command intended for aboto
     if (!bot.commands.has(command)) return;
 
+    // dynamically try executing built-in commands
     try {
         bot.commands.get(command).execute(msg, args);
     } 
@@ -135,57 +125,7 @@ bot.on('message', msg => {
     }
     */
 
-    // random num generator -- moved to controller
-    /*
-    if (command === 'random') {
-        msg.channel.send(parseInt((Math.random() * 100) + 1))
-    }
-    */
-
-    // openweather api handling
-    if (command === 'weather') {
-        if (args.length == 0) {
-            msg.channel.send("Specify ZIP code -- ie. ?weather 98119")
-            return
-        }
-        
-        // init request string
-        var reqString = {
-            host : 'api.openweathermap.org',
-            port : 443,
-            path : '/data/2.5/weather?zip='+ args[0] 
-                + ',us&units=imperial&appid=' + tools.weatherToken,
-            method : 'GET' 
-        };
-        
-        // perform the GET request
-        var reqGet = https.request(reqString, function(res) {
-            console.log("statusCode: ", res.statusCode)
-            var output = ''
-        
-            res.on('data', function(d) {
-                output += d
-            })
-            res.on('end', function() {
-                var jsonOutput = JSON.parse(output);
-                finalOutput = jsonOutput.name +' ~ ' + jsonOutput.main.temp +
-                    'F and ' + jsonOutput.weather[0].main
-                if (jsonOutput.weather[0].main in weatherMap) {
-                    finalOutput += (' ' + weatherMap[jsonOutput.weather[0].main])
-                }
-                console.log(finalOutput)
-                msg.channel.send(finalOutput)        
-            })
-        })
-
-        reqGet.end();
-      
-        reqGet.on('error', function(e) {
-            console.error(e);
-        })
-    }
-
-    else if (command === 'play') {
+    if (command === 'play') {
         if (args.length == 0) {
             msg.channel.send("Specify a name to search -- ie. ?play despacito")
             return
