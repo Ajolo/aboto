@@ -4,10 +4,27 @@
 const Discord = require('discord.js')
 const https = require('https')
 const ytdl = require('ytdl-core')
-const bot = new Discord.Client()
+const fs = require('fs') // fs is Node's native file system module
 const tools = require('./tools.js')
-const token = tools.token
-const prefix = tools.prefix
+const token = tools.token   // grab token from tools
+const prefix = tools.prefix // grab prefix from tools
+
+// init new bot
+const bot = new Discord.Client()
+
+// retrieve commands 
+bot.commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+// loop over commandFiles array and dynamically set your commands 
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+
+	// set a new item in the Collection
+	// with the key as the command name and the value as the exported module
+	bot.commands.set(command.name, command);
+}
+
 
 // weather map containing emoji for known descriptors 
 var weatherMap = {}
@@ -37,7 +54,7 @@ bot.on('message', msg => {
     // ignore bot messages
     if (msg.author.bot) return
 
-    // simple replies 
+    // simple reactions 
     if (!msg.content.startsWith(prefix)) {
         // found a msg not containing command 
         if (new RegExp("\\b"+"hello"+"\\b").test(msg.content)) {
@@ -64,13 +81,25 @@ bot.on('message', msg => {
         return
     }
 
-    // else msg found containing command for aboto
+    // slice command and args
     const args = msg.content
         .slice(prefix.length)
         .trim()
         .split(/ +/g)
     // pop first element (the command)
     const command = args.shift().toLowerCase()
+
+    // check if msg contains command intended for aboto
+    if (!bot.commands.has(command)) return;
+
+    try {
+        bot.commands.get(command).execute(msg, args);
+    } 
+    catch (err) {
+        console.error(err);
+        msg.reply('there was an error trying to execute that command!');
+    }
+    
 
     async function checkRole() {
         if (msg.member.roles.find("name", "creator")) {
@@ -106,13 +135,15 @@ bot.on('message', msg => {
     }
     */
 
-    // random num generator 
+    // random num generator -- moved to controller
+    /*
     if (command === 'random') {
         msg.channel.send(parseInt((Math.random() * 100) + 1))
     }
+    */
 
     // openweather api handling
-    else if (command === 'weather') {
+    if (command === 'weather') {
         if (args.length == 0) {
             msg.channel.send("Specify ZIP code -- ie. ?weather 98119")
             return
@@ -163,9 +194,6 @@ bot.on('message', msg => {
         getSong(msg, args[0])
     }
 
-    else {
-        msg.channel.send("?command not recognized")
-    }
 })
 
 //
