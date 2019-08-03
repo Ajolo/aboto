@@ -7,7 +7,7 @@ const tools = require('./tools.js')
 const token = tools.token   // grab token from tools
 const prefix = tools.prefix // grab prefix from tools
 
-// init new bot
+// init bot
 const bot = new Discord.Client()
 
 // retrieve commands 
@@ -56,6 +56,9 @@ bot.on('message', msg => {
         }
         if (new RegExp("\\b"+"69"+"\\b").test(msg.content)) {
             msg.channel.send('nice')
+        }
+        if (new RegExp("\\b"+"stop"+"\\b").test(msg.content)) {
+            msg.channel.send({ files: ['images/penWAS.png'] })
         }
 
         // check for bad words
@@ -123,7 +126,7 @@ bot.on('message', msg => {
         bulkDelete(args[0])
     }
     */
-   
+
 })
 //
 // LOGIN ON START
