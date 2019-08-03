@@ -91,42 +91,6 @@ bot.on('message', msg => {
         console.error(err);
         msg.reply('there was an error trying to execute that command!');
     }
-    
-
-    async function checkRole() {
-        if (msg.member.roles.find("name", "creator")) {
-            return true
-        }
-        return false
-    }
-
-    /* temp remove for further testing
-    if (command === 'delete') {
-        if (checkRole() == false) {
-            msg.channel.send("Higher privileges needed for this command")
-            return
-        }
-
-        async function bulkDelete(numDelete) {
-            if (isNaN(numDelete)) {
-                msg.channel.send("Specify number of messages to delete -- ie. ?delete 5")
-                return
-            }
-    
-            msg.delete() // delete msg containing delete command
-            
-            // grab x amount of messages, limit specified by user
-            const fetched = await msg.channel.fetchMessages({limit: numDelete})
-            console.log("~~~ fetched.size is: " + fetched.size)
-    
-            msg.channel.bulkDelete(fetched)
-                .catch(error => console.log(error))
-        }
-        
-        bulkDelete(args[0])
-    }
-    */
-
 })
 //
 // LOGIN ON START
