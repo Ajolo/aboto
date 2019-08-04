@@ -4,8 +4,8 @@
 const Discord = require('discord.js')
 const fs = require('fs') // fs is Node's native file system module
 const tools = require('./tools.js')
-const token = tools.token   // grab token from tools
-const prefix = tools.prefix // grab prefix from tools
+// const token = tools.token   // grab token from tools
+// const prefix = tools.prefix // grab prefix from tools
 
 // init bot
 const bot = new Discord.Client()
@@ -43,7 +43,7 @@ bot.on('message', msg => {
     if (msg.author.bot) return
 
     // simple reactions 
-    if (!msg.content.startsWith(prefix)) {
+    if (!msg.content.startsWith(process.env.PREFIX)) {
         // found a msg not containing command 
         if (new RegExp("\\b"+"hello"+"\\b").test(msg.content)) {
             msg.reply('hello')
@@ -62,19 +62,21 @@ bot.on('message', msg => {
         }
 
         // check for bad words
+        /*
         for (i = 0; i < tools.swears.length; i++) {
             if (msg.content.includes(tools.swears[i])) {
                 // msg.delete(1000)
                 msg.channel.send({ files: ['images/christianserver.jpg'] })
             }
         }
+        */
 
         return
     }
 
     // slice command and args
     const args = msg.content
-        .slice(prefix.length)
+        .slice(process.env.PREFIX.length)
         .trim()
         .split(/ +/g)
     // pop first element (the command)

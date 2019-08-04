@@ -3,7 +3,7 @@ module.exports = {
 	description: 'Get weather desc based on ZIP code!',
 	execute(msg, args) {
         // imports
-        const tools = require('../tools.js')
+        // const tools = require('../tools.js')
         const https = require('https')
 
         // weather map containing emoji for known descriptors 
@@ -25,7 +25,7 @@ module.exports = {
             host : 'api.openweathermap.org',
             port : 443,
             path : '/data/2.5/weather?zip='+ args[0] 
-                + ',us&units=imperial&appid=' + tools.weatherToken,
+                + ',us&units=imperial&appid=' + process.env.WEATHER_TOKEN/*tools.weatherToken*/,
             method : 'GET' 
         };
         
