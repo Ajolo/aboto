@@ -95,4 +95,5 @@ bot.on('message', msg => {
 //
 // LOGIN ON START
 //
-bot.login(token)
+// bot.login(token)
+bot.login(process.env.BOT_TOKEN); //BOT_TOKEN is the Client Secret
