@@ -3,7 +3,7 @@
 //
 const Discord = require('discord.js')
 const fs = require('fs') // fs is Node's native file system module
-const tools = require('./tools.js')
+// const tools = require('./tools.js')
 // const token = tools.token   // grab token from tools
 // const prefix = tools.prefix // grab prefix from tools
 
