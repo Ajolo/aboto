@@ -16,7 +16,7 @@ module.exports = {
             .addField('?play', 'Followed by a Youtube URL, will play video in voice channel user occupies', true)
             .addField('?random', 'Generates a random integer 1-100', true)
             .addField('?ping', 'pong', true)
-            .addField('?delete', 'Administrator command to delete x number of messages', true)
+            .addField('?delete', 'Administrator command to delete 1-99 messages', true)
             .setTimestamp()
             .setFooter('Built using Discord.js', 'https://i.imgur.com/wSTFkRM.png');
    

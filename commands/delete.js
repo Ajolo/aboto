@@ -20,15 +20,20 @@ module.exports = {
                 msg.channel.send("Specify number of messages to delete -- ie. ?delete 5")
                 return
             }
-    
-            msg.delete() // delete msg containing delete command
+            // validate number range (1 - 99)
+            if (!(numDelete >= 1 && numDelete <= 99)) {
+                msg.channel.send("Delete range must be between 1 and 99")
+                return
+            }
             
-            // grab x amount of messages, limit specified by user
-            const fetched = await msg.channel.fetchMessages({limit: numDelete})
-            console.log("!!! fetched.size is: " + fetched.size)
-    
-            msg.channel.bulkDelete(fetched)
-                .catch(error => console.log(error))
+            // add one to numDelete to delete original delete message
+            numDeleteInt = (parseInt(numDelete) + 1)
+
+            // use bulkDelete for requests of size 2 - 100
+            console.log("deleting " + numDeleteInt + " messages")
+            msg.channel.bulkDelete(numDeleteInt).then(() => {
+                msg.channel.send("Deleted messages.").then(message => message.delete(3000));
+            });
         }
         
         deleteMessages(args[0])
