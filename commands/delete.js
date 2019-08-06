@@ -15,7 +15,7 @@ module.exports = {
 
         if (!checkRole()) return
 
-        async function bulkDelete(numDelete) {
+        async function deleteMessages(numDelete) {
             if (isNaN(numDelete)) {
                 msg.channel.send("Specify number of messages to delete -- ie. ?delete 5")
                 return
@@ -31,6 +31,6 @@ module.exports = {
                 .catch(error => console.log(error))
         }
         
-        bulkDelete(args[0])
+        deleteMessages(args[0])
     },
 };
