@@ -36,7 +36,7 @@ module.exports = {
                 
                 dispatcher.on('end', () => {
                         console.log('Stream finished')
-                        // voiceChannel.leave()
+                        voiceChannel.leave()
         
                         // shift the queue
                         // serverQueue.songs.shift()
