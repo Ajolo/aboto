@@ -11,6 +11,7 @@ module.exports = {
         weatherMap['Clear'] = '☀️'
         weatherMap['Rain'] = '🌧'
         weatherMap['Clouds'] = '⛅'
+        weatherMap['Haze'] = weatherMap['Clouds']
         weatherMap['Snow'] = '❄️'
         weatherMap['Drizzle'] = '💧'
         weatherMap['Thunderstorm'] = '⚡'
