@@ -14,6 +14,7 @@ module.exports = {
             .addField('?help', 'Displays overview of currently available commands', true)
             .addField('?weather', 'Followed by a zip code will retrieve localized weather data', true)
             .addField('?play', 'Followed by a Youtube URL, will play video in voice channel user occupies', true)
+            .addField('?search', 'Provide search arguments and retrieve first link result', true)
             .addField('?random', 'Generates a random integer 1-100', true)
             .addField('?ping', 'pong', true)
             .addField('?delete', 'Administrator command to delete 1-99 messages', true)
