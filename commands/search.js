@@ -33,7 +33,15 @@ module.exports = {
             })
             res.on('end', function() {
                 var jsonOutput = JSON.parse(output);
-                finalOutput = jsonOutput.organic[1].url
+
+                // loop to 'find' first url
+                tryIndex = 1
+                finalOutput = jsonOutput.organic[tryIndex].url
+                while (finalOutput == undefined) {
+                    tryIndex += 1
+                    finalOutput = jsonOutput.organic[tryIndex].url
+                }
+                
                 console.log(finalOutput)
                 msg.channel.send(finalOutput)        
             })
